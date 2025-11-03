@@ -1,0 +1,19 @@
+# dumps e logs
+*.dump
+*.log
+*.tar
+*.gz
+*.zip
+
+# evidências grandes opcionais
+*.mp4
+*.mov
+*.webm
+
+# editor
+.vscode/
+.idea/
+
+# sistema
+.DS_Store
+Thumbs.db
