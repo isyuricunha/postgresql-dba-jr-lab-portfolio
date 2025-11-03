@@ -17,3 +17,6 @@ criar índices específicos para q1 a q5 e registrar `queries_after_indexes.sql`
 
 ### atualização índices direcionados
 eu criei índices específicos para as cinco consultas e rodei analyze. eu capturei os planos e gerei um resumo de tempos em `proofs/times_baseline.txt` e `proofs/times_after_indexes.txt`. objetivo: comparar antes e depois de forma objetiva.
+
+### atualização q1 reescrita
+eu reescrevi a q1 para agrupar por film_id primeiro e só depois juntar o título e filtrar por rating. objetivo: reduzir custo de agrupamento e nested loops.
