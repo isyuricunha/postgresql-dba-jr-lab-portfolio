@@ -3,6 +3,9 @@
 ## o que mudou
 eu instalei postgresql 16 via pgdg, ativei logging_collector e ajustei log_line_prefix. eu organizei o pg_hba.conf para localhost e para a minha rede do lab com scram. eu modelei papéis de grupo sem login app_read e app_writer e apliquei default privileges no schema public. criei o usuário de administração do lab yuri_admin e o banco labdb.
 
+### atualização conexão remota controlada
+eu abri o listen_addresses para localhost e para o ip tailscale do servidor 100.102.175.70 e liberei meu windows 100.68.114.98 no pg_hba.conf com scram. eu testei do windows e confirmo srv=100.102.175.70 e cliente=100.68.114.98.
+
 ## como mudou
 eu usei alter system para ligar logs e recarreguei a config. eu editei o pg_hba.conf para permitir apenas localhost e minha faixa da rede do lab com scram. eu criei as roles de grupo sem login e concedi memberships ao yuri_admin. eu defini default privileges para que objetos novos já nasçam com leitura para app_read e dml para app_writer.
 
