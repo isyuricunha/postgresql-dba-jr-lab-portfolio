@@ -20,3 +20,6 @@ eu criei índices específicos para as cinco consultas e rodei analyze. eu captu
 
 ### atualização q1 reescrita
 eu reescrevi a q1 para agrupar por film_id primeiro e só depois juntar o título e filtrar por rating. objetivo: reduzir custo de agrupamento e nested loops.
+
+### leitura rápida dos resultados
+eu medi 5 rodadas e usei a mediana para cada consulta. a q5 ganhou muito com o índice de prefixo. a q1 não melhorou porque o dataset é pequeno e o plano original já era eficiente. eu mantive a q1 original como referência e registrei a reescrita apenas como experimento.
