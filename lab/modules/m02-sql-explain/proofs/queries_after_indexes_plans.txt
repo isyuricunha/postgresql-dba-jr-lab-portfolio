@@ -1,0 +1,99 @@
+q1 top 20 filmes mais alugados com filtro de rating
+                                                                          QUERY PLAN                                                                           
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=566.50..566.55 rows=20 width=23) (actual time=42.130..42.231 rows=20 loops=1)
+   ->  Sort  (cost=566.50..566.98 rows=194 width=23) (actual time=42.125..42.174 rows=20 loops=1)
+         Sort Key: (count(*)) DESC
+         Sort Method: top-N heapsort  Memory: 27kB
+         ->  HashAggregate  (cost=559.39..561.33 rows=194 width=23) (actual time=41.536..41.814 rows=183 loops=1)
+               Group Key: f.title
+               Batches: 1  Memory Usage: 48kB
+               ->  Nested Loop  (cost=74.79..543.82 rows=3114 width=15) (actual time=1.074..35.899 rows=3212 loops=1)
+                     ->  Hash Join  (cost=74.50..162.39 rows=889 width=19) (actual time=1.042..16.006 rows=924 loops=1)
+                           Hash Cond: (i.film_id = f.film_id)
+                           ->  Seq Scan on inventory i  (cost=0.00..75.81 rows=4581 width=8) (actual time=0.016..6.698 rows=4581 loops=1)
+                           ->  Hash  (cost=72.08..72.08 rows=194 width=19) (actual time=0.993..1.001 rows=194 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 18kB
+                                 ->  Bitmap Heap Scan on film f  (cost=5.65..72.08 rows=194 width=19) (actual time=0.080..0.585 rows=194 loops=1)
+                                       Recheck Cond: (rating = 'PG'::mpaa_rating)
+                                       Heap Blocks: exact=53
+                                       ->  Bitmap Index Scan on ix_film_rating  (cost=0.00..5.61 rows=194 width=0) (actual time=0.046..0.048 rows=194 loops=1)
+                                             Index Cond: (rating = 'PG'::mpaa_rating)
+                     ->  Index Only Scan using idx_fk_inventory_id on rental r  (cost=0.29..0.39 rows=4 width=4) (actual time=0.004..0.009 rows=3 loops=924)
+                           Index Cond: (inventory_id = i.inventory_id)
+                           Heap Fetches: 0
+ Planning Time: 3.658 ms
+ Execution Time: 42.571 ms
+(23 rows)
+
+q2 alugueis por cliente em uma janela de datas
+                                                                                        QUERY PLAN                                                                                         
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=4.34..4.35 rows=1 width=12) (actual time=0.067..0.079 rows=0 loops=1)
+   ->  Sort  (cost=4.34..4.35 rows=1 width=12) (actual time=0.063..0.072 rows=0 loops=1)
+         Sort Key: (count(*)) DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  GroupAggregate  (cost=4.31..4.33 rows=1 width=12) (actual time=0.053..0.060 rows=0 loops=1)
+               Group Key: customer_id
+               ->  Sort  (cost=4.31..4.32 rows=1 width=4) (actual time=0.050..0.054 rows=0 loops=1)
+                     Sort Key: customer_id
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Index Only Scan using idx_unq_rental_rental_date_inventory_id_customer_id on rental r  (cost=0.29..4.30 rows=1 width=4) (actual time=0.028..0.030 rows=0 loops=1)
+                           Index Cond: ((rental_date >= '2005-05-01'::date) AND (rental_date < '2005-06-01'::date))
+                           Heap Fetches: 0
+ Planning Time: 0.308 ms
+ Execution Time: 0.145 ms
+(14 rows)
+
+q3 total pago por cliente em uma janela de datas
+                                                  QUERY PLAN                                                  
+--------------------------------------------------------------------------------------------------------------
+ Limit  (cost=58.47..58.48 rows=7 width=36) (actual time=0.044..0.056 rows=0 loops=1)
+   ->  Sort  (cost=58.47..58.48 rows=7 width=36) (actual time=0.040..0.050 rows=0 loops=1)
+         Sort Key: (sum(p.amount)) DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  GroupAggregate  (cost=58.23..58.37 rows=7 width=36) (actual time=0.013..0.020 rows=0 loops=1)
+               Group Key: p.customer_id
+               ->  Sort  (cost=58.23..58.25 rows=7 width=10) (actual time=0.009..0.013 rows=0 loops=1)
+                     Sort Key: p.customer_id
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Append  (cost=0.28..58.13 rows=7 width=10) (actual time=0.002..0.003 rows=0 loops=1)
+                           Subplans Removed: 7
+ Planning Time: 3.663 ms
+ Execution Time: 0.120 ms
+(13 rows)
+
+q4 contagem de filmes por categoria
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=58.20..58.24 rows=16 width=15) (actual time=13.617..13.654 rows=16 loops=1)
+   Sort Key: (count(*)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=57.72..57.88 rows=16 width=15) (actual time=13.556..13.592 rows=16 loops=1)
+         Group Key: c.name
+         Batches: 1  Memory Usage: 24kB
+         ->  Hash Join  (cost=1.36..45.89 rows=2367 width=7) (actual time=0.094..9.998 rows=2367 loops=1)
+               Hash Cond: (fc.category_id = c.category_id)
+               ->  Seq Scan on film_category fc  (cost=0.00..36.67 rows=2367 width=4) (actual time=0.019..3.253 rows=2367 loops=1)
+               ->  Hash  (cost=1.16..1.16 rows=16 width=11) (actual time=0.062..0.067 rows=16 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on category c  (cost=0.00..1.16 rows=16 width=11) (actual time=0.007..0.032 rows=16 loops=1)
+ Planning Time: 0.601 ms
+ Execution Time: 13.729 ms
+(14 rows)
+
+q5 busca por prefixo no título
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=32.65..32.66 rows=1 width=19) (actual time=0.076..0.084 rows=1 loops=1)
+   Sort Key: title
+   Sort Method: quicksort  Memory: 25kB
+   ->  Bitmap Heap Scan on film  (cost=4.38..32.64 rows=1 width=19) (actual time=0.043..0.048 rows=1 loops=1)
+         Filter: (title ~~ 'ACADEMY%'::text)
+         Heap Blocks: exact=1
+         ->  Bitmap Index Scan on ix_film_title_prefix  (cost=0.00..4.38 rows=10 width=0) (actual time=0.033..0.035 rows=1 loops=1)
+               Index Cond: ((title ~>=~ 'ACADEMY'::text) AND (title ~<~ 'ACADEMZ'::text))
+ Planning Time: 0.315 ms
+ Execution Time: 0.116 ms
+(10 rows)
+
