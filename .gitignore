@@ -1,14 +1,10 @@
-# dumps e logs
-*.dump
-*.log
+# artefatos grandes opcionais
 *.tar
 *.gz
 *.zip
 
-# evidências grandes opcionais
-*.mp4
-*.mov
-*.webm
+# dumps que não quero versionar
+*.dump
 
 # editor
 .vscode/
