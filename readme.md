@@ -16,6 +16,7 @@ eu criei este repositório para documentar meu estudo prático e comprovar, com 
 * ubuntu server 24.04 lts
 * postgresql 16 via pgdg
 * acesso remoto controlado pela minha rede tailscale
+* home lab 256gb ram ecc-r + 256gb ram ecc-r mirror (pra evitar falhas), 14tb hdd + 14tb hdd para redundancia + 14tb hdd pra backup, 256gb nvme para o sistema, 500gb nvme para cache de arquivos, 4tb nvme para arquivos 'frios' 
 
 ## coisas para se ter em mente
 * os ips nao sao reais, pode tentar invadir a vontade
