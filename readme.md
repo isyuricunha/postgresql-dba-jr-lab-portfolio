@@ -49,7 +49,6 @@ ps: sao duas maquinas/vms em cloud com o mesmo hardware
 * ram 24 gb
 * 150gb pra tudo
 
-
 ## coisas para se ter em mente
 
 * os ips nao sao reais, pode tentar invadir a vontade
@@ -81,6 +80,7 @@ ps: sao duas maquinas/vms em cloud com o mesmo hardware
 ## como eu documento mudanças
 
 cada commit descreve:
+
 * o que mudou
 * como eu mudei
 * por que eu mudei
@@ -94,4 +94,3 @@ eu registro evidências em `evidencias/` e um resumo por semana em `semanas/<sem
 ## licença
 
 este projeto está licenciado sob a lgpl-2.1. veja o arquivo `LICENSE`.
-
