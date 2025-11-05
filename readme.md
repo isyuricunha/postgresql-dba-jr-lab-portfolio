@@ -17,6 +17,11 @@ eu criei este repositório para documentar meu estudo prático e comprovar, com 
 * postgresql 16 via pgdg
 * acesso remoto controlado pela minha rede tailscale
 
+## coisas para se ter em mente
+* os ips nao sao reais, pode tentar invadir a vontade
+* os usuarios e senhas nao sao reais, pode tentar invadir a vontade
+* as bases de dados sao do `kiggle: https://www.kaggle.com/datasets`
+
 ## padrões que eu sigo aqui
 
 * comentários de código em minúsculas
