@@ -56,7 +56,7 @@ ps: sao duas maquinas/vms em cloud com o mesmo hardware
 * os usuarios e senhas nao sao reais, pode tentar invadir a vontade
 * as bases de dados sao do `kiggle: https://www.kaggle.com/datasets`
 * alguma coisas podem dar errado, e a ideia é aprender, entao, talvez eu force o erro
-* nao tem use de ia aqui
+* nao tem uso de ia aqui
 
 ## padrões que eu sigo aqui
 
